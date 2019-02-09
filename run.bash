@@ -11,10 +11,21 @@ scriptdir=$(readlink -f .)
 
 cd ../comprakt
 
-BENCHES="comprakt_bench_load_store.INLINEUTILS bench_math.input bench_fannkuchredux bench_conways_game_of_life.input bench_BigTensorProduct.input"
-BENCHES="bench_math.input bench_fannkuchredux bench_conways_game_of_life.input bench_BigTensorProduct.input"
-BACKENDS="compile compile-firm"
-OPTIMIZATIONS="none moderate aggressive"
+BENCHES=()
+BENCHES+=("comprakt_bench_load_store.INLINEUTILS")
+BENCHES+=("bench_math.input")
+BENCHES+=("bench_fannkuchredux")
+BENCHES+=("bench_conways_game_of_life.input")
+BENCHES+=("bench_BigTensorProduct.input")
+
+BACKENDS=()
+BACKENDS+=("compile")
+BACKENDS+=("compile-firm")
+
+OPTIMIZATIONS=()
+OPTIMIZATIONS+=("none")
+OPTIMIZATIONS+=("moderate")
+OPTIMIZATIONS+=("aggressive")
 
 BINARIES=""
 for bench in $BENCHES; do
