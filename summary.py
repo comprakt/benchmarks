@@ -53,6 +53,8 @@ bench_order = sorted(list(set(bench_order)))
 print(bench_order)
 
 fig, axes = plt.subplots(2, 1, sharey=True)
+fig.set_size_inches(30, 20)
+
 for (i, show_backend) in enumerate(["compile", "compile-firm"]):
     ax = axes[i]
     ax.set_ylabel(show_backend)
@@ -61,7 +63,16 @@ for (i, show_backend) in enumerate(["compile", "compile-firm"]):
     print(show)
     sns.barplot(x="bench", y="time", hue='optimization',
                 data=show, ax=ax, order=bench_order)
-plt.show()
+
+# plt.tight_layout(pad=1, w_pad=1, h_pad=1.0)
+plt.tight_layout()
+
+if sys.argv[1] == "show":
+    plt.show()
+elif sys.argv[1] == "pdf":
+    fig.savefig(resultsdir / 'summary.pdf', bbox_inches='tight')
+
+
 # df.plot.barh()
 # plt.show()
 
