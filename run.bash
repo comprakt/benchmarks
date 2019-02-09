@@ -27,8 +27,8 @@ OPTIMIZATIONS+=("none")
 OPTIMIZATIONS+=("moderate")
 OPTIMIZATIONS+=("aggressive")
 
-BINARIES=""
-for bench in $BENCHES; do
+BINARIES=()
+for bench in "${BENCHES[@]}"; do
     bench_orig="${benchsdir}/${bench}.java"
     if [[ "$bench" =~ .*INLINEUTILS.* ]]; then
         ${scriptdir}/inline_mjtest_exec_utils.sh "$bench_orig"
@@ -36,29 +36,30 @@ for bench in $BENCHES; do
     else
         bench_input="${bench_orig}"
     fi
-    for backend in $BACKENDS; do
-        for optimization in $OPTIMIZATIONS; do
+    for backend in "${BACKENDS[@]}"; do
+        for optimization in "${OPTIMIZATIONS[@]}"; do
             stem="${resultsdir}/${bench}__STEM_${backend}__${optimization}__"
             cargo run -- --${backend} -O ${optimization} --emit-asm "$stem".S -o "$stem" "$bench_input"
-            BINARIES="$BINARIES $stem"
+            BINARIES+=("$stem")
         done
     done
 done
 
-for bin in $BINARIES; do
+for bin in "${BINARIES[@]}"; do
     echo run $bin
     # reconstruct benchmark name from binary name
     bench="${bin%%__STEM*}"
     bench=$(basename "$bench")
+    jsonprefix="${resultsdir}/"$(basename "$bin")"__HYPERFINE_"
     hyperfine_cmd="hyperfine -r 4 --export-json "
     if [[ "$bench" =~ .*input ]]; then
         without_input="${bench%.input}"
         for input in ${benchsdir}/${without_input}*inputc ; do
             echo "$input"
             input_base=$(basename "$input")
-            $hyperfine_cmd "${stem}__HYPERFINE_WITH_INPUT_${input_base}.json" "$bin < $input"
+            $hyperfine_cmd "${jsonprefix}_WITH_INPUT_${input_base}.json" "$bin < $input"
         done
     else
-        $hyperfine_cmd "${stem}__HYPERFINE_NO_INPUT.json" "$bin"
+        $hyperfine_cmd "${jsonprefix}_NO_INPUT.json" "$bin"
     fi
 done
