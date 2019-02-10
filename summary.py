@@ -29,9 +29,9 @@ def parse_hyperfine_result_file(path):
     measurements = []
     for time in times:
         measurements.append({
-            "bench": m["stem"],
-            "backend": m["backend"],
-            "optimization": m["optimization"],
+            "bench": m.group("stem"),
+            "backend": m.group("backend"),
+            "optimization": m.group("optimization"),
             "time": time,
         })
     return measurements
