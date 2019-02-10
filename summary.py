@@ -39,8 +39,14 @@ def parse_hyperfine_result_file(path):
 
 os.chdir(os.path.dirname(sys.argv[0]))
 
+
+p = argparse.ArgumentParser(description='Process ./run.bash results')
+p.add_argument('action', choices=['show', 'pdf'])
+p.add_argument('--resultsdir', default="./results/")
+args = p.parse_args()
+
 results = []
-resultsdir = Path("./results/")
+resultsdir = Path(args.resultsdir)
 for resultfilepath in resultsdir.glob("*HYPERFINE*.json"):
     results.extend(parse_hyperfine_result_file(resultfilepath))
 
@@ -52,6 +58,10 @@ bench_order = list(df["bench"])
 bench_order = sorted(list(set(bench_order)))
 print(bench_order)
 
+optimization_order = list(df["optimization"])
+optimization_order = sorted(list(set(optimization_order)))
+print(optimization_order)
+
 fig, axes = plt.subplots(2, 1, sharey=True)
 fig.set_size_inches(30, 20)
 
@@ -62,22 +72,13 @@ for (i, show_backend) in enumerate(["compile", "compile-firm"]):
     show = df[df['backend'] == show_backend]
     print(show)
     sns.barplot(x="bench", y="time", hue='optimization',
-                data=show, ax=ax, order=bench_order)
+                data=show, ax=ax, order=bench_order, hue_order=optimization_order)
 
-# plt.tight_layout(pad=1, w_pad=1, h_pad=1.0)
 plt.tight_layout()
 
-if sys.argv[1] == "show":
+if args.action == "show":
     plt.show()
-elif sys.argv[1] == "pdf":
+elif args.action == "pdf":
     fig.savefig(str(resultsdir / 'summary.pdf'), bbox_inches='tight')
-
-
-# df.plot.barh()
-# plt.show()
-
-
-# plt.boxplot(times, labels=commands)
-# plt.ylabel("Time [s]")
-# plt.ylim(0, None)
-# plt.show()
+else:
+    raise Exception("unknown action " + args.action)
