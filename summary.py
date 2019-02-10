@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 def parse_hyperfine_result_file(path):
-    with open(path) as f:
+    with open(str(path)) as f:
         results = json.load(f)["results"]
 
     assert(len(results) == 1)
