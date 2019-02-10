@@ -70,7 +70,7 @@ plt.tight_layout()
 if sys.argv[1] == "show":
     plt.show()
 elif sys.argv[1] == "pdf":
-    fig.savefig(resultsdir / 'summary.pdf', bbox_inches='tight')
+    fig.savefig(str(resultsdir / 'summary.pdf'), bbox_inches='tight')
 
 
 # df.plot.barh()
