@@ -12,12 +12,14 @@ scriptdir=$(readlink -f .)
 cd ../comprakt
 
 BENCHES=()
-BENCHES+=("comprakt_bench_load_store.INLINEUTILS")
 BENCHES+=("bench_math.input")
 BENCHES+=("bench_fannkuchredux")
 BENCHES+=("bench_conways_game_of_life.input")
 BENCHES+=("bench_BigTensorProduct.input")
 BENCHES+=("comprakt_bench_safe_arrays")
+BENCHES+=("comprakt_bench_arithmetics.INLINEUTILS")
+BENCHES+=("comprakt_bench_load_store.INLINEUTILS")
+
 
 BACKENDS=()
 BACKENDS+=("compile")
@@ -25,12 +27,14 @@ BACKENDS+=("compile-firm")
 
 OPTIMIZATIONS=()
 OPTIMIZATIONS+=("none")
-OPTIMIZATIONS+=("moderate")
-OPTIMIZATIONS+=("aggressive")
-OPTIMIZATIONS+=("custom:ConstantFolding,ControlFlow")
-OPTIMIZATIONS+=("custom:Inline,ConstantFoldingWithLoadStore,ControlFlow")
-OPTIMIZATIONS+=("custom:ConstantFoldingWithLoadStore,ControlFlow")
-OPTIMIZATIONS+=("custom:ConstantFoldingWithLoadStore,ControlFlow,EarliestPlacement,CommonSubExprElim,CostMinimizingPlacement")
+OPTIMIZATIONS+=("Custom:Inline,ConstantFolding,ControlFlow,NodeLocal")
+OPTIMIZATIONS+=("Custom:Inline,ConstantFoldingLoadStore,ControlFlow,NodeLocal")
+OPTIMIZATIONS+=("Custom:Inline,ConstantFolding,ControlFlow")
+OPTIMIZATIONS+=("Custom:Inline,ConstantFoldingLoadStore,ControlFlow")
+OPTIMIZATIONS+=("Custom:ConstantFolding,ControlFlow,NodeLocal")
+OPTIMIZATIONS+=("Custom:ConstantFoldingLoadStore,ControlFlow,NodeLocal")
+OPTIMIZATIONS+=("Custom:ConstantFolding,ControlFlow")
+OPTIMIZATIONS+=("Custom:ConstantFoldingLoadStore,ControlFlow")
 
 BINARIES=()
 for bench in "${BENCHES[@]}"; do
