@@ -17,6 +17,7 @@ BENCHES+=("bench_math.input")
 BENCHES+=("bench_fannkuchredux")
 BENCHES+=("bench_conways_game_of_life.input")
 BENCHES+=("bench_BigTensorProduct.input")
+BENCHES+=("comprakt_bench_safe_arrays")
 
 BACKENDS=()
 BACKENDS+=("compile")
