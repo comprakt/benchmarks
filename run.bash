@@ -43,8 +43,7 @@ for bench in "${BENCHES[@]}"; do
     for backend in "${BACKENDS[@]}"; do
         for optimization in "${OPTIMIZATIONS[@]}"; do
             stem="${resultsdir}/${bench}__STEM_${backend}__${optimization}__"
-            cargo run -- --${backend} -O ${optimization} --emit-asm "$stem".S -o "$stem" "$bench_input"
-            BINARIES+=("$stem")
+            cargo run -- --${backend} -O ${optimization} --emit-asm "$stem".S -o "$stem" "$bench_input" && BINARIES+=("$stem")
         done
     done
 done
