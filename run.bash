@@ -17,7 +17,7 @@ BENCHES+=("bench_fannkuchredux")
 BENCHES+=("bench_conways_game_of_life.input")
 BENCHES+=("bench_BigTensorProduct.input")
 BENCHES+=("comprakt_bench_safe_arrays")
-BENCHES+=("comprakt_bench_linear_scan.INLINEUTILS")
+BENCHES+=("comprakt_bench_linear_scan.INLINEUTILS.input")
 BENCHES+=("comprakt_bench_load_store.INLINEUTILS")
 
 
