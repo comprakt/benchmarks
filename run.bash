@@ -26,6 +26,10 @@ OPTIMIZATIONS=()
 OPTIMIZATIONS+=("none")
 OPTIMIZATIONS+=("moderate")
 OPTIMIZATIONS+=("aggressive")
+OPTIMIZATIONS+=("custom:ConstantFolding,ControlFlow")
+OPTIMIZATIONS+=("custom:Inline,ConstantFoldingWithLoadStore,ControlFlow")
+OPTIMIZATIONS+=("custom:ConstantFoldingWithLoadStore,ControlFlow")
+OPTIMIZATIONS+=("custom:ConstantFoldingWithLoadStore,ControlFlow,EarliestPlacement,CommonSubExprElim,CostMinimizingPlacement")
 
 BINARIES=()
 for bench in "${BENCHES[@]}"; do
