@@ -1,3 +1,45 @@
+
+class Main {
+    public void div_by_constant() {
+        int i = 0;
+        int prod = 0;
+        while (i < 1024 * 400) {
+            SafeIntMatrix dividend = new SafeIntMatrix(); dividend.init(16, 16);
+
+            {
+                int x = 0;
+                while (x < dividend.len) {
+                    int y = 0;
+                    while (y < dividend.len2(x)) {
+                        LehmerRandom gen = new LehmerRandom().initWithDefault();
+                        dividend.set(x, y, gen.random());
+                        y = y + 1;
+                    }
+                    x = x + 1;
+                }
+            }
+
+            LehmerRandom gen = new LehmerRandom().initWithDefault();
+
+            int x = gen.random() % dividend.len;
+            int y = gen.random() % dividend.len2(0);
+            int divisor = dividend.get(x, y);
+
+            dividend.div_by(divisor);
+
+            prod = prod * dividend.get(x, y);
+            i = i + 1;
+        }
+
+        System.out.println(prod); /* Should be 1 */
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.div_by_constant();
+    }
+}
+
 /* Adapted from: https://en.wikipedia.org/wiki/Lehmer_random_number_generator */
 class LehmerRandom {
   public int M; /* 2^31 - 1 (A large prime number) */
@@ -186,45 +228,4 @@ class SafeIntMatrix {
         }
     }
 
-}
-
-class Main {
-    public void div_by_constant() {
-        int i = 0;
-        int prod;
-        while (i < 1024 * 400) {
-            SafeIntMatrix dividend = new SafeIntMatrix(); dividend.init(16, 16);
-
-            {
-                int x = 0;
-                while (x < dividend.len) {
-                    int y = 0;
-                    while (y < dividend.len2(x)) {
-                        LehmerRandom gen = new LehmerRandom().initWithDefault();
-                        dividend.set(x, y, gen.random());
-                        y = y + 1;
-                    }
-                    x = x + 1;
-                }
-            }
-
-            LehmerRandom gen = new LehmerRandom().initWithDefault();
-
-            int x = gen.random() % dividend.len;
-            int y = gen.random() % dividend.len2(0);
-            int divisor = dividend.get(x, y);
-
-            dividend.div_by(divisor);
-
-            prod = prod * dividend.get(x, y);
-            i = i + 1;
-        }
-
-        System.out.println(prod); /* Should be 1 */
-    }
-
-    public static void main(String[] args) {
-        Main main = new Main();
-        main.div_by_constant();
-    }
 }
